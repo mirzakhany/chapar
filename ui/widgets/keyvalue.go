@@ -25,6 +25,7 @@ type KeyValue struct {
 
 	list *widget.List
 
+	split     SplitView
 	onChanged func(items []*KeyValueItem)
 }
 
@@ -56,6 +57,10 @@ func NewKeyValue(items ...*KeyValueItem) *KeyValue {
 			List: layout.List{
 				Axis: layout.Vertical,
 			},
+		},
+		split: SplitView{
+			Ratio:    0,
+			BarWidth: unit.Dp(2),
 		},
 
 		filteredItems: make([]*KeyValueItem, 0),
@@ -284,6 +289,28 @@ func (kv *KeyValue) WithAddLayout(gtx layout.Context, title, hint string, theme 
 					})
 				}),
 			)
+		}),
+		layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+			border := widget.Border{
+				Color:        theme.TableBorderColor,
+				CornerRadius: 0,
+				Width:        unit.Dp(1),
+			}
+			return border.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+				gtx.Constraints.Max.Y = gtx.Dp(unit.Dp(35))
+				return kv.split.Layout(gtx, theme,
+					func(gtx layout.Context) layout.Dimensions {
+						return layout.Inset{Left: unit.Dp(50), Top: unit.Dp(8)}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+							return material.Label(theme.Material(), theme.TextSize, "Key").Layout(gtx)
+						})
+					},
+					func(gtx layout.Context) layout.Dimensions {
+						return layout.Inset{Left: unit.Dp(50), Top: unit.Dp(8)}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+							return material.Label(theme.Material(), theme.TextSize, "Value").Layout(gtx)
+						})
+					},
+				)
+			})
 		}),
 		layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 			return kv.Layout(gtx, theme)

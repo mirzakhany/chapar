@@ -74,7 +74,10 @@ func (s *SplitView) Layout(gtx layout.Context, theme *chapartheme.Theme, left, r
 		// register for input
 		barRect := image.Rect(leftSize, 0, rightOffset, gtx.Constraints.Max.X)
 		area := clip.Rect(barRect).Push(gtx.Ops)
-		paint.FillShape(gtx.Ops, barColor, clip.Rect(barRect).Op())
+		// paint.FillShape(gtx.Ops, barColor, clip.Rect(barRect).Op())
+		// defer clip.UniformRRect(barRect, 0).Push(gtx.Ops).Pop()
+		paint.Fill(gtx.Ops, theme.SideBarBgColor)
+
 		pointer.CursorColResize.Add(gtx.Ops)
 		event.Op(gtx.Ops, s)
 
