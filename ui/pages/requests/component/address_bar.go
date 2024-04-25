@@ -102,6 +102,12 @@ func (a *AddressBar) Layout(gtx layout.Context, theme *chapartheme.Theme) layout
 		}
 	}
 
+	if a.sendClickable.Clicked(gtx) {
+		if a.onSubmit != nil {
+			a.onSubmit()
+		}
+	}
+
 	return layout.Flex{
 		Axis:      layout.Horizontal,
 		Alignment: layout.Middle,
@@ -133,12 +139,6 @@ func (a *AddressBar) Layout(gtx layout.Context, theme *chapartheme.Theme) layout
 			})
 		}),
 		layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-			if a.sendClickable.Clicked(gtx) {
-				if a.onSubmit != nil {
-					go a.onSubmit()
-				}
-			}
-
 			gtx.Constraints.Min.X = gtx.Dp(80)
 			btn := material.Button(theme.Material(), &a.sendClickable, "Send")
 			btn.Background = theme.SendButtonBgColor

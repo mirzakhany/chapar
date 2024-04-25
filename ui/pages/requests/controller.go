@@ -202,7 +202,7 @@ func (c *Controller) onSave(id string) {
 
 func (c *Controller) onSubmit(id, containerType string) {
 	if containerType == TypeRequest {
-		c.onSubmitRequest(id)
+		go c.onSubmitRequest(id)
 	}
 }
 
