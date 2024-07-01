@@ -25,7 +25,23 @@ type Container interface {
 	HidePrompt()
 }
 
+type GrpcContainer interface {
+	Container
+	SetOnProtoFileSelect(func(id string))
+	SetProtoBodyFilePath(filePath string)
+	SetOnReload(func(id string))
+	SetServices(services []domain.GRPCService)
+	ShowMethodsLoading()
+	HideMethodsLoading()
+	SetResponseLoading(loading bool)
+	SetOnInvoke(f func(id string))
+	SetResponse(response domain.GRPCResponseDetail)
+	SetOnLoadRequestExample(f func(id string))
+	SetRequestBody(body string)
+}
+
 type RestContainer interface {
+	Container
 	SetHTTPResponse(response domain.HTTPResponseDetail)
 	GetHTTPResponse() *domain.HTTPResponseDetail
 	SetPostRequestSetPreview(preview string)

@@ -21,11 +21,13 @@ type Theme struct {
 	*material.Theme
 	isDark bool
 
+	LoaderColor           color.NRGBA
 	BorderColor           color.NRGBA
 	BorderColorFocused    color.NRGBA
 	TextColor             color.NRGBA
 	ButtonTextColor       color.NRGBA
 	SendButtonBgColor     color.NRGBA
+	SwitchBgColor         color.NRGBA
 	TabInactiveColor      color.NRGBA
 	SeparatorColor        color.NRGBA
 	SideBarBgColor        color.NRGBA
@@ -66,6 +68,7 @@ func (t *Theme) Switch(isDark bool) *material.Theme {
 
 	if isDark {
 		t.Theme.Palette.Fg = rgb(0xd7dade)
+		t.LoaderColor = rgb(0xd7dade)
 		t.Theme.Palette.Bg = rgb(0x202224)
 		t.Theme.Palette.ContrastBg = rgb(0x202224)
 		t.Theme.Palette.ContrastFg = rgb(0xffffff)
@@ -74,6 +77,7 @@ func (t *Theme) Switch(isDark bool) *material.Theme {
 		t.BorderColor = rgb(0x6c6f76)
 		t.TabInactiveColor = rgb(0x4589f5)
 		t.SendButtonBgColor = rgb(0x4589f5)
+		t.SwitchBgColor = rgb(0x4589f5)
 		t.TextColor = rgb(0xffffff)
 		t.ButtonTextColor = rgb(0xffffff)
 		t.SeparatorColor = rgb(0x2b2d31)
@@ -90,6 +94,7 @@ func (t *Theme) Switch(isDark bool) *material.Theme {
 		t.WarningColor = rgb(0xffe073)
 		t.BadgeBgColor = rgb(0x2b2d31)
 	} else {
+		t.LoaderColor = rgb(0x000000)
 		t.Theme.Palette.Fg = rgb(0x000000)
 		t.Theme.Palette.Bg = rgb(0xffffff)
 		t.Theme.Palette.ContrastBg = rgb(0x4589f5)
@@ -98,6 +103,7 @@ func (t *Theme) Switch(isDark bool) *material.Theme {
 		t.BorderColor = rgb(0x6c6f76)
 		t.TabInactiveColor = rgb(0x4589f5)
 		t.SendButtonBgColor = rgb(0x4589f5)
+		t.SwitchBgColor = rgb(0x4589f5)
 		t.TextColor = rgb(0x000000)
 		t.ButtonTextColor = rgb(0xffffff)
 		t.SeparatorColor = rgb(0x9c9c9c)
@@ -132,6 +138,8 @@ func argb(c uint32) color.NRGBA {
 
 func GetRequestPrefixColor(method string) color.NRGBA {
 	switch method {
+	case "gRPC":
+		return LightGreen
 	case "GET":
 		return LightGreen
 	case "POST":
